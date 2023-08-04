@@ -26,6 +26,8 @@
         .content {
             padding: 20px;
             text-align: center;
+            display:grid;
+            place-items: center;
         }
         .frame-container {
             display: flex;
@@ -188,7 +190,8 @@ function uploadImage() {
 
             document.getElementsByClassName('result-text')[0].innerHTML = resultText;
             document.getElementById('showResultButton').style.display = 'none';
-            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').style.display = 'grid';
+            document.getElementById('result').style.placeItems = 'center';
         }
 
         function getRaceDescription(race) {
@@ -260,7 +263,7 @@ function share() {
         <h1>인종 예측기</h1>
         <p>재미로 보는 나의 인종 </p>
     </header>
-
+        
     <div class="content">
         <h2>내 인종 확인하기</h2>
         <div class="frame-container">
