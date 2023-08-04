@@ -23,13 +23,12 @@ def index():
     return render_template('index.html') # templates 폴더의 index.html 파일 렌더링
 
 
-
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
     file = request.files['file']
-
+    gender = int(request.form['gender'])
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
 
@@ -41,7 +40,7 @@ def upload_file():
         print(app.config['UPLOAD_FOLDER'] + file.filename) 
         img = race_check.get_face(app.config['UPLOAD_FOLDER'] + "/"+ file.filename)
         vector = race_check.get_embedded_face(img)
-        result = race_check.get_face_race(vector, 0) #male 0, female 1W
+        result = race_check.get_face_race(vector, gender) #male 0, female 1W
         os.remove(app.config['UPLOAD_FOLDER'] + "/"+ file.filename)
         return  jsonify({'message' : result}), 200
     else:   

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:url" content="http://3.34.103.83/">
-    <meta property="og:title" content="인종 판별기">
+    <meta property="og:title" content="인종 예측기">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/form.sebuung.team/dna.png">
     <meta property="og:description" content="내 인종을 찾아보세요!">
-    <title>인종 판별기</title>
+    <title>인종 예측기</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -92,8 +92,8 @@
             cursor: pointer;
         }
         svg {
-            width: 50vh;
-            height: 50vh;
+            width: 40vh;
+            height: 40vh;
         }
     </style>
     <script>
@@ -101,9 +101,24 @@
 function uploadImage() {
             var input = document.getElementById('fileInput');
             var file = input.files[0];
-            
+            var genderInputs = document.getElementsByName('gender');
+            var gender;
+
+            for (var i = 0; i < genderInputs.length; i++) {
+            if (genderInputs[i].checked) {
+                gender = genderInputs[i].value;
+                break;
+            }
+            }
+
+            if (!gender) {
+                alert('성별을 선택해 주세요!');
+                return;
+            }
+
             var formData = new FormData();
             formData.append('file', file);
+            formData.append('gender', gender); // 성별 정보 추가
 
             fetch('/upload', {
                 method: 'POST',
@@ -178,19 +193,19 @@ function uploadImage() {
         function getRaceDescription(race) {
             // 각 인종에 대한 설명을 반환하는 함수 (여기서는 예시 설명으로 대체)
             const descriptions = {
-                북유럽인: "북유럽인은 북유럽 지역에 기원하는 인종입니다",
-                셈리트인: "셈리트인은 아라비아 반도와 주변 지역에 기원하는 인종입니다",
-                남유럽인: "남유럽인은 지중해 주변 지역에 기원하는 인종입니다",
-                서아시아인: "서아시아인은 서남아시아 지역에 기원하는 인종입니다",
-                중앙아시아인: "중앙아시아인은 중앙아시아 지역에 기원하는 인종입니다",
-                아메리카_원주민: "아메리카 원주민은 미국 원주민들을 지칭하는 인종입니다",
-                북아시아인: "북아시아인은 북아시아 지역에 기원하는 인종입니다",
-                동남아시아인: "동남아시아인은 동남아시아 지역에 기원하는 인종입니다",
-                아프리카계_미국인: "아프리카계 미국인은 미국에서 기원한 아프리카계 미국 시민들을 지칭하는 인종입니다",
-                동아프리카인: "동아프리카인은 동아프리카 지역에 기원하는 인종입니다",
-                남아프리카인: "남아프리카인은 남아프리카 지역에 기원하는 인종입니다",
-                서아프리카인: "서아프리카인은 서아프리카 지역에 기원하는 인종입니다"
-            };
+                북유럽인: "북유럽인은 북유럽 지역에 기원하는 인종입니다. 코가 길고 얼굴이 좁으며 눈이 파랗게 나타나는 경우가 많습니다",
+                셈리트인: "셈리트인은 아라비아 반도와 주변 지역에 기원하는 인종입니다. 코가 크고 눈이 갈색인 경우가 많으며, 피부색이 밀색입니다",
+                남유럽인: "남유럽인은 지중해 주변 지역에 기원하는 인종입니다. 코가 높고 피부가 올리브색인 경우가 있으며, 갈색 머리와 눈이 일반적입니다",
+                서아시아인: "서아시아인은 서남아시아 지역에 기원하는 인종입니다. 얼굴이 둥글며 코가 평평하고 넓은 입술이 특징입니다",
+                중앙아시아인: "중앙아시아인은 중앙아시아 지역에 기원하는 인종입니다. 얼굴이 넓고 코가 평평하며 눈이 작은 편입니다",
+                아메리카_원주민: "아메리카 원주민은 미국 원주민들을 지칭하는 인종입니다. 높은 광대뼈와 직선 코, 작은 입이 특징입니다",
+                북아시아인: "북아시아인은 북아시아 지역에 기원하는 인종입니다. 넓은 얼굴과 작은 눈, 평평한 코가 특징입니다",
+                동남아시아인: "동남아시아인은 동남아시아 지역에 기원하는 인종입니다. 평평한 얼굴과 넓은 이마, 둥근 코가 특징입니다",
+                아프리카계_미국인: "아프리카계 미국인은 미국에서 기원한 아프리카계 미국 시민들을 지칭하는 인종입니다. 피부가 짙으며, 코가 넓고 입술이 두껍습니다",
+                동아프리카인: "동아프리카인은 동아프리카 지역에 기원하는 인종입니다. 길고 뾰족한 얼굴과 높은 광대뼈, 작은 입이 특징입니다",
+                남아프리카인: "남아프리카인은 남아프리카 지역에 기원하는 인종입니다. 둥글고 넓은 얼굴과 넓은 코, 두꺼운 입술이 특징입니다",
+                서아프리카인: "서아프리카인은 서아프리카 지역에 기원하는 인종입니다. 넓은 얼굴과 코와 입술이 두껍습니다"
+};
 
             return descriptions[race] || "해당 인종에 대한 설명이 없습니다.";
         }
@@ -234,7 +249,7 @@ function share() {
 </head>
 <body>
     <header>
-        <h1>인종 판별기</h1>
+        <h1>인종 예측기</h1>
         <p>재미로 보는 나의 인종 </p>
     </header>
 
@@ -245,6 +260,13 @@ function share() {
                 <span class="upload-text">사진 업로드</span>
                 <img id="imagePreview" src="" alt="">
             </label>
+        </div>
+        <div style="margin: 20px;">
+        
+            <input type="radio" id="male" name="gender" value="0">
+            <label for="male">남성</label>
+            <input type="radio" id="female" name="gender" value="1">
+            <label for="female">여성</label>
         </div>
         <input id="fileInput" type="file" accept="image/*" onchange="previewImage(this)" style="display: none;">
         <button class="show-result-button" id="showResultButton" onclick="uploadImage()">결과 확인하기</button>
