@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:url" content="http://3.34.103.83/">
+    <meta property="og:title" content="인종 판별기">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/form.sebuung.team/dna.png">
+    <meta property="og:description" content="내 인종을 찾아보세요!">
+    <title>인종 판별기</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background-color: #000;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .frame-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .frame {
+            border: 5px solid #000;
+            border-radius: 30px;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            
+        }
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            object-fit: contain;
+        }
+        .upload-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-size: 20px;
+        }
+        .show-result-button {
+            background-color: #000;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            margin: 20px;
+            cursor: pointer;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .result {
+            display: none;
+            font-size: 20px;
+            margin-top: 30px;
+        }
+        .result-text {
+            margin: 10px;
+        }
+        .share-button {
+            background-color: #000;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+
+function uploadImage() {
+            var input = document.getElementById('fileInput');
+            var file = input.files[0];
+            
+            var formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('파일이 잘못되었습니다!');
+                    location.reload()
+                } else {
+                    msg = JSON.stringify(data.message)
+                    msg = JSON.parse(msg)
+                    showResult(msg);
+                }
+            })
+            .catch(error => {
+                alert('파일이 잘못되었습니다!');
+                location.reload()
+            });
+        }
+
+
+
+        function previewImage(input) {
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementsByClassName('upload-text')[0].style.display = 'none';
+                document.getElementById('showResultButton').style.display = 'block';
+                document.getElementById('result').style.display = 'none';
+                document.getElementsByClassName('frame')[0].style.border = 'none';
+
+            }
+
+            reader.readAsDataURL(file);
+        }
+        function showResult(msg) {
+            // 한국어로 번역된 키(key)를 사용하기 위한 객체
+            const translatedKeys = {
+                Northern_European: "북유럽인",
+                Semitic: "셈리트인",
+                Southern_European: "남유럽인",
+                West_Asian: "서아시아인",
+                Central_Asian: "중앙아시아인",
+                Native_American: "아메리카_원주민",
+                North_Asian: "북아시아인",
+                Southeast_Asian: "동남아시아인",
+                African_American: "아프리카계_미국인",
+                East_African: "동아프리카인",
+                South_African: "남아프리카인",
+                West_African: "서아프리카인"
+            };
+
+            let sortedKeys = Object.keys(msg).sort((a, b) => msg[b] - msg[a]); // value 기준 내림차순 정렬
+            let resultText = '';
+
+            for (let i = 0; i < 3 && i < sortedKeys.length; i++) {
+                const translatedKey = translatedKeys[sortedKeys[i]] || sortedKeys[i];
+                const description = getRaceDescription(translatedKey); // 해당 인종에 대한 설명 가져오기
+                resultText += `<strong>${i + 1}. ${translatedKey}</strong><br>${description}<br><br>`;
+            }
+
+            document.getElementsByClassName('result-text')[0].innerHTML = resultText;
+            document.getElementById('showResultButton').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function getRaceDescription(race) {
+            // 각 인종에 대한 설명을 반환하는 함수 (여기서는 예시 설명으로 대체)
+            const descriptions = {
+                북유럽인: "북유럽인은 북유럽 지역에 기원하는 인종입니다",
+                셈리트인: "셈리트인은 아라비아 반도와 주변 지역에 기원하는 인종입니다",
+                남유럽인: "남유럽인은 지중해 주변 지역에 기원하는 인종입니다",
+                서아시아인: "서아시아인은 서남아시아 지역에 기원하는 인종입니다",
+                중앙아시아인: "중앙아시아인은 중앙아시아 지역에 기원하는 인종입니다",
+                아메리카_원주민: "아메리카 원주민은 미국 원주민들을 지칭하는 인종입니다",
+                북아시아인: "북아시아인은 북아시아 지역에 기원하는 인종입니다",
+                동남아시아인: "동남아시아인은 동남아시아 지역에 기원하는 인종입니다",
+                아프리카계_미국인: "아프리카계 미국인은 미국에서 기원한 아프리카계 미국 시민들을 지칭하는 인종입니다",
+                동아프리카인: "동아프리카인은 동아프리카 지역에 기원하는 인종입니다",
+                남아프리카인: "남아프리카인은 남아프리카 지역에 기원하는 인종입니다",
+                서아프리카인: "서아프리카인은 서아프리카 지역에 기원하는 인종입니다"
+            };
+
+            return descriptions[race] || "해당 인종에 대한 설명이 없습니다.";
+        }
+
+function share() {
+    
+            shareURL = location.href;
+            var textArea = document.createElement("textarea");
+            textArea.value = shareURL;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+
+            alert("공유 링크가 복사되었습니다.");
+        }
+    
+
+    </script>
+</head>
+<body>
+    <header>
+        <h1>인종 판별기</h1>
+    </header>
+
+    <div class="content">
+        <h2>내 출신 확인하기</h2>
+        <div class="frame-container">
+            <label class="frame" for="fileInput">
+                <span class="upload-text">사진 업로드</span>
+                <img id="imagePreview" src="" alt="">
+            </label>
+        </div>
+        <input id="fileInput" type="file" accept="image/*" onchange="previewImage(this)" style="display: none;">
+        <button class="show-result-button" id="showResultButton" onclick="uploadImage()">결과 확인하기</button>
+        <div class="result" id="result">
+            <p class="result-text"></p>
+            <button class="share-button" onclick="share()">결과 공유하기</button>
+        </div>
+    </div>
+</body>
+</html>
