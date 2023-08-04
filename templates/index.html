@@ -96,6 +96,7 @@
             height: 40vh;
         }
     </style>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"> </script> 
     <script>
 
 function uploadImage() {
@@ -231,6 +232,7 @@ function uploadImage() {
                 pathElement.style.fill = "deepskyblue";
             });
         }
+        
 function share() {
     
             shareURL = location.href;
@@ -240,8 +242,14 @@ function share() {
             textArea.select();
             document.execCommand("copy");
             document.body.removeChild(textArea);
-
-            alert("공유 링크가 복사되었습니다.");
+           
+            html2canvas(document.getElementsByClassName('content')[0]).then(function(canvas) {
+            var link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'content.png';
+            link.click();
+        });
+     
         }
     
 
