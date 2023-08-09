@@ -80,6 +80,11 @@
             display: none;
             font-size: 20px;
             margin-top: 30px;
+            
+        }
+        .button-container{
+            width: 100%;
+            text-align: center;
         }
         .result-text {
             margin: 10px;
@@ -92,11 +97,14 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            display: inline-block;
         }
         svg {
             width: 40vh;
             height: 40vh;
         }
+
+
     </style>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"> </script> 
     <script>
@@ -130,7 +138,7 @@ function uploadImage() {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    alert('파일이 잘못되었습니다!');
+                    alert('얼굴을 찾지 못하였습니다. 사진상에 얼굴이 있지만 부득이하게 사진에서 얼굴을 검출하지 못하는 경우가 있으므로 다른 사진을 넣어주시면 감사하겠습니다');
                     location.reload()
                 } else {
                     msg = JSON.stringify(data.message)
@@ -139,7 +147,7 @@ function uploadImage() {
                 }
             })
             .catch(error => {
-                alert('파일이 잘못되었습니다!');
+                alert('얼굴을 찾지 못하였습니다. 사진상에 얼굴이 있지만 부득이하게 사진에서 얼굴을 검출하지 못하는 경우가 있으므로 다른 사진을 넣어주시면 감사하겠습니다');
                 location.reload()
             });
         }
@@ -193,7 +201,9 @@ function uploadImage() {
             document.getElementById('result').style.display = 'grid';
             document.getElementById('result').style.placeItems = 'center';
         }
-
+        function goBack() {
+        location.reload(); // 페이지 새로고침을 통해 이전 단계로 돌아감
+    }
         function getRaceDescription(race) {
             // 각 인종에 대한 설명을 반환하는 함수 (여기서는 예시 설명으로 대체)
             const descriptions = {
@@ -463,7 +473,14 @@ function share() {
                   <path class="EG" d="M573.17,377.28L572.38,378.57L571.78,380.97L571.02,382.61L570.36,383.17L569.43,382.15L568.16,380.73L566.16,376.16L565.88,376.45L567.04,379.82L568.76,383L570.88,387.88L571.91,389.56L572.81,391.3L575.33,394.7L574.77,395.23L574.86,397.2L578.13,399.91L578.62,400.53L567.5,400.53L556.62,400.53L545.35,400.53L545.35,389.3L545.35,378.12L544.51,375.54L545.23,373.54L544.8,372.15L545.81,370.58L549.54,370.53L552.24,371.39L555.02,372.36L556.32,372.86L558.48,371.83L559.63,370.9L562.11,370.63L564.1,371.04L564.87,372.66L565.52,371.59L567.76,372.36L569.95,372.55L571.33,371.73z"></path>
                 </g>
               </svg>
-            <button class="share-button" onclick="share()">공유하기</button>
+
+              <div class="button-container">
+            <button class="share-button" onclick="share()">공유하기</button>           
+              <button class="share-button" onclick="goBack()">뒤로가기</button> <!-- 뒤로가기 버튼 추가 -->
+            </div>
+            <h6> ❗ 공유용 이미지가 다운되며, 링크가 복사됩니다. ❗ </h6>
+
+
         </div>
     </div>
 </body>
