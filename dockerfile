@@ -6,7 +6,7 @@ RUN yum install git -y
 
 RUN git clone --branch serverless https://github.com/YoonHyunWoo/FINDNA.git
 
-RUN cp -r FINDNA/* /var/task
+RUN cp -r FINDNA/* ${LAMBDA_TASK_ROOT}
 
 RUN pip install tensorflow --no-cache-dir
 
@@ -16,6 +16,6 @@ RUN pip install opencv-python --no-cache-dir
 
 RUN pip install numpy --no-cache-dir
 
-COPY facenet_model.h5 /var/task
+COPY facenet_model.h5 ${LAMBDA_TASK_ROOT}
 
-CMD ["lambda_function.lambda_handler"]
+CMD ["lambda_function.handler"]

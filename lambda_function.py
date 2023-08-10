@@ -11,7 +11,7 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def lambda_handler(event, context):
+def handler(event, context):
     file_info = event['file']
     gender = int(event['gender'])
     filename = file_info['name']
