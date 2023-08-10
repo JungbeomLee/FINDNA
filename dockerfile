@@ -8,13 +8,13 @@ RUN git clone --branch serverless https://github.com/YoonHyunWoo/FINDNA.git
 
 RUN cp -r FINDNA/* /var/task
 
-RUN pip install tensorflow
+RUN pip install tensorflow --no-cache-dir
 
-RUN pip install mediapipe
+RUN pip install mediapipe --no-cache-dir
 
-RUN install cv2
+RUN pip install opencv-python --no-cache-dir
 
-RUN pip install numpy
+RUN pip install numpy --no-cache-dir
 
 COPY facenet_model.h5 /var/task
 
