@@ -16,7 +16,7 @@ RUN pip install opencv-python --no-cache-dir
 
 RUN pip install numpy --no-cache-dir
 
-RUN yum install mesa-libGL
+RUN yum install -y mesa-libGL
 
 COPY facenet_model.h5 ${LAMBDA_TASK_ROOT}
 
