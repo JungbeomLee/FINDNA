@@ -9,6 +9,7 @@ import pyheif
 race_check = face_fair_check('/var/task/facenet_model.h5')
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
+UPLOAD_FOLDER = '/tmp'
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -38,14 +39,21 @@ def handler(event, context):
     if not allowed_file(filename):
         return {'statusCode': 400, 'body': 'File type not allowed'}
 
-    file_content = base64.b64decode(file_info['content'])
-    binary_file = io.BytesIO(file_content)
+    # /tmp 디렉토리에 파일 저장
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    with open(filepath, 'wb') as file:
+        file.write(base64.b64decode(file_info['content']))
 
-    img = read_image(binary_file, filename)
+    # 이미지 처리
+    img = race_check.get_face(filepath)
     vector = race_check.get_embedded_face(img)
     result = race_check.get_face_race(vector, gender) # male 0, female 1
+
+    # 임시 파일 제거
+    os.remove(filepath)
 
     return {
         'statusCode': 200,
         'body': json.dumps({'message': result})
     }
+
