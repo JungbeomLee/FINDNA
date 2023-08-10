@@ -16,6 +16,8 @@ RUN pip install opencv-python --no-cache-dir
 
 RUN pip install numpy --no-cache-dir
 
+RUN yum install mesa-libGL
+
 COPY facenet_model.h5 ${LAMBDA_TASK_ROOT}
 
 CMD ["lambda_function.handler"]
