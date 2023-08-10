@@ -30,6 +30,7 @@ def read_image(file_content, filename):
         return Image.open(io.BytesIO(file_content))
 
 def handler(event, context):
+    event = event['body-json']
     file_info = event['file']
     gender = int(event['gender'])
     filename = file_info['name']
