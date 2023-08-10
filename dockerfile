@@ -8,7 +8,7 @@ RUN git clone --branch serverless https://github.com/YoonHyunWoo/FINDNA.git
 
 RUN cp -r FINDNA/* ${LAMBDA_TASK_ROOT}
 
-RUN pip install tensorflow --no-cache-dir
+RUN pip install tensorflow-cpu --no-cache-dir
 
 RUN pip install mediapipe --no-cache-dir
 
