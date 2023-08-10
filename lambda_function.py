@@ -27,7 +27,7 @@ def read_image(file_content, filename):
         )
         return image
     else:
-        return Image.open(io.BytesIO(file_content))
+        return Image.open(file_content)
 
 def handler(event, context):
     event = event['body-json']
