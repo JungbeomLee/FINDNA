@@ -4,7 +4,7 @@ RUN /var/lang/bin/python3.8 -m pip install --upgrade pip
 
 RUN yum install git -y
 
-RUN git clone --branch serverless https://github.com/YoonHyunWoo/FINDNA.git
+RUN git clone https://github.com/YoonHyunWoo/FINDNA.git
 
 RUN cp -r FINDNA/* ${LAMBDA_TASK_ROOT}
 
