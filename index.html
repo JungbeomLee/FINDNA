@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:url" content="http://3.34.103.83/">
+    <meta property="og:url" content="https://dna.sebuung.team/">
     <meta property="og:title" content="인종 예측기">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/form.sebuung.team/dna.png">
@@ -149,7 +149,7 @@
             body: raw,
             redirect: 'follow'
           };
-          fetch("https://yc39n55zfl.execute-api.ap-northeast-2.amazonaws.com/default/upload", requestOptions).then(response => response.json()).then(data => {
+          fetch("/upload", requestOptions).then(response => response.json()).then(data => {
             if (data.error) {
               alert('얼굴을 찾지 못하였습니다. 사진상에 얼굴이 있지만 부득이하게 사진에서 얼굴을 검출하지 못하는 경우가 있으므로 다른 사진을 넣어주시면 감사하겠습니다');
               location.reload()
