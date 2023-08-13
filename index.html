@@ -23,6 +23,11 @@
         color: white;
         padding: 20px;
         font-size: 24px;
+        border-radius: 20px;
+        width: 85%;
+        margin: auto;
+        font-size: 24px;
+        margin-top: 12px;
       }
 
       .content {
@@ -36,15 +41,15 @@
         display: flex;
         justify-content: center;
         margin: 20px auto;
-        border-radius: 20px;
+        border-radius: 5px;
         overflow: hidden;
       }
 
       .frame {
-        border: 5px solid #000;
-        border-radius: 30px;
-        width: 300px;
-        height: 300px;
+        border: 2px solid #000;
+        border-radius: 5px;
+        width: 280px;
+        height: 280px;
         display: flex;
         justify-content: center;
         cursor: pointer;
@@ -66,13 +71,13 @@
         left: 50%;
         transform: translate(-50%, -50%);
         color: #000;
-        font-size: 20px;
+        font-size: 24px;
       }
 
       .show-result-button {
         background-color: #000;
         color: white;
-        padding: 10px 20px;
+        padding: 20px 40px;
         font-size: 16px;
         border: none;
         border-radius: 10px;
@@ -81,6 +86,7 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 24px;
       }
 
       .result {
@@ -101,7 +107,7 @@
       .share-button {
         background-color: #000;
         color: white;
-        padding: 10px 20px;
+        padding: 20px 40px;
         font-size: 16px;
         border: none;
         border-radius: 10px;
@@ -113,6 +119,39 @@
         width: 40vh;
         height: 40vh;
       }
+
+      h2{
+        font-size: 24px;
+      }
+
+      .radio-group{
+        margin: 15px ;
+      }
+      input[type=radio]+label{
+        display: inline-block;
+    cursor: pointer;
+    height: 24px;
+    width: 90px;
+    border: 1px solid #333; 
+    line-height: 24px;
+    text-align: center;
+    font-weight:bold;
+    font-size:13px;
+        border-radius: 5px;
+      }
+
+      input[type=radio]{
+    display: none;
+    }
+
+    input[type=radio]+label{
+    background-color: #fff;
+    color: #333;
+}
+input[type=radio]:checked+label{
+    background-color: #333;
+    color: #fff;
+}
     </style>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
@@ -131,6 +170,7 @@
           alert('성별을 선택해 주세요!');
           return;
         }
+        
         var reader = new FileReader();
         reader.onload = function(e) {
           var base64Image = e.target.result.split(',')[1];
@@ -194,9 +234,7 @@
           West_African: "서아프리카인"
         };
         const msg = JSON.parse(data.body).message; // JSON 객체 내부의 "message" 키의 값을 추출합니다.
-        console.log(msg);
         let sortedKeys = Object.keys(msg).sort((a, b) => msg[b] - msg[a]); // value 기준 내림차순 정렬
-        console.log(sortedKeys)
         let resultText = '';
         for (let i = 0; i < 3 && i < sortedKeys.length; i++) {
           const translatedKey = translatedKeys[sortedKeys[i]] || sortedKeys[i];
@@ -279,18 +317,18 @@
   </head>
   <body>
     <header>
-      <h1>인종 예측기</h1>
-      <p>재미로 보는 나의 인종 </p>
+      <h1>FIN.DNA</h1>
+      <p>나는 어느 대륙에서 왔을까? </p>
     </header>
     <div class="content">
-      <h2>내 인종 확인하기</h2>
+      <h2>내 출신지 예측하기</h2>
       <div class="frame-container">
         <label class="frame" for="fileInput">
           <span class="upload-text">사진 업로드</span>
           <img id="imagePreview" src="" alt="">
         </label>
       </div>
-      <div style="margin: 20px;">
+      <div class="radio-group">
         <input type="radio" id="male" name="gender" value="0">
         <label for="male">남성</label>
         <input type="radio" id="female" name="gender" value="1">
