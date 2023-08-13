@@ -194,6 +194,7 @@
           West_African: "서아프리카인"
         };
         const msg = JSON.parse(data.body).message; // JSON 객체 내부의 "message" 키의 값을 추출합니다.
+        console.log(msg);
         let sortedKeys = Object.keys(msg).sort((a, b) => msg[b] - msg[a]); // value 기준 내림차순 정렬
         console.log(sortedKeys)
         let resultText = '';
