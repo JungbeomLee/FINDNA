@@ -195,9 +195,11 @@
         };
         const msg = JSON.parse(data.body).message; // JSON 객체 내부의 "message" 키의 값을 추출합니다.
         let sortedKeys = Object.keys(msg).sort((a, b) => msg[b] - msg[a]); // value 기준 내림차순 정렬
+        console.log(sortedKeys)
         let resultText = '';
         for (let i = 0; i < 3 && i < sortedKeys.length; i++) {
           const translatedKey = translatedKeys[sortedKeys[i]] || sortedKeys[i];
+
           const description = getRaceDescription(translatedKey); // 해당 인종에 대한 설명 가져오기
           updateContinentColors(sortedKeys[i]);
           resultText += `
